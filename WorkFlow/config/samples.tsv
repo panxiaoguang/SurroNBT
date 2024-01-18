@@ -1,0 +1,3 @@
+SampleName	ControlName	FastQ1	FastQ2
+Day8-dox	Day8_WT	rawData/spCas9_Day8-dox_1.fq.gz	rawData/spCas9_Day8-dox_2.fq.gz
+Day8_WT	NA	rawData/spCas9_Day8_WT_1.fq.gz	rawData/spCas9_Day8_WT_2.fq.gz

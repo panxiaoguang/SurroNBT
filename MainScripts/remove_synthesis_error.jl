@@ -21,19 +21,22 @@ function readRef(fs::String)
     fasta
 end
 
-function removeBAC(ref::String, ctrl::Vector, case::Vector, start::Int64)
-    filter(x -> (!((x in ctrl) && x != ref[start:end])), case)
+function removeBAC(ref::String, ctrl::Vector, case::Vector, start::Int64, fin::Int64)
+    filter(x -> (!((x in ctrl) && x != ref[start:fin])), case)
 end
 
-@main function fin(;reference::String="none", outPath::String="none", start::Int64=114)
+@main function fin(;spCas9::String="none",WT::String="none",reference::String="none", outPath::String="none", start::Int64=118, fin::Int64=155)
     refs = readRef(reference)
     all_lib = collect(keys(refs))
+    if isdir(outPath) == false
+        mkdir(outPath)
+    end
     for i in all_lib
         if isfile("$(spCas9)/$i.out") && isfile("$(WT)/$i.out")
             case = ReadIn("$(spCas9)/$i.out")
             ctrl = ReadIn("$(WT)/$i.out")
             open("$outPath/$i.filter.out", "w+") do IO
-                for line in removeBAC(refs[i], ctrl, case, start)
+                for line in removeBAC(refs[i], ctrl, case, start, fin)
                     write(IO, line, "\n")
                 end
             end

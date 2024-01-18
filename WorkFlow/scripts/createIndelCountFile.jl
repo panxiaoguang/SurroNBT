@@ -1,14 +1,13 @@
 using CSV
 using DataFrames
-using Fire
 
-function panduan(x)
-    buyao = vcat(string.(1:14) .* "I1", string.(22:27) .* "I1", string.(1:14) .* "D1", string.(22:27) .* "D1")
+function panduan(x::Vector{T},buyao::Vector{T}) where T <: AbstractString
     !all(in.(x, Ref(buyao)))
 end
 
-function modify_df(fs)
+function modify_df(fs::String,lftS::Int64,lftE::Int64,rgtS::Int64,rgtE::Int64)
     df = DataFrame(CSV.File(fs, delim="\t"))
+    buyao = vcat(string.(lftS:lftE) .* "I1", string.(rgtS:rgtE) .* "I1", string.(lftS:lftE) .* "D1", string.(rgtS:rgtE) .* "D1")
     if (eltype(df.insertions) == Missing && eltype(df.deletions) == Missing) | (size(df)[1] == 0)
         return Missing
     elseif eltype(df.insertions) == Missing
@@ -19,9 +18,9 @@ function modify_df(fs)
         df.deletions .= ""
     end
     df[:,[:insertions,:deletions]] .= ifelse.(ismissing.(df[:,[:insertions,:deletions]]), "", df[:,[:insertions,:deletions]])
-    df = select(df, :reference, :query, :count, AsTable(4:5) => ByRow(x -> split(strip(join([x.insertions,x.deletions], "|"), ['|']), "|")) => :indels)
+    df = select(df, :reference, :query, :count, AsTable(4:5) => ByRow(x -> replace.(split(strip(join([x.insertions,x.deletions], "|"), ['|']), "|"),r":[AGCTN]+" => "")) => :indels)
     sort!(df, order(:count, rev=true))
-    df = df[panduan.(df.indels),:]
+    df = df[panduan.(df.indels,Ref(buyao)),:]
     df
 end
 
@@ -49,19 +48,18 @@ function readRef(fs::String)
     fasta
 end
 
-@main function main(;reference::String="none",inPath::String="none",out::String="none")
+function main(;reference::String="none",inPath::String="none",out::String="none",lftS::Int64=1,lftE::Int64=25,rgtS::Int64=32,rgtE::Int64=37)
     f = open(out, "w")
     refs = readRef(reference)
     all_lib = collect(keys(refs))
+    println(f,"Label\tCleanReadNumbers\tIndelReadNumbers")
     for i in all_lib
         if isfile("$inPath/$i.indelProfile.tsv")
-            clean, indels = calIndel(modify_df("$inPath/$i.indelProfile.tsv"))
+            clean, indels = calIndel(modify_df("$inPath/$i.indelProfile.tsv",lftS,lftE,rgtS,rgtE))
             println(f, i, "\t", clean, "\t", indels)
         end
     end
     close(f)
 end
 
-
-
-
+main(reference=snakemake.config["ref"],inPath=snakemake.input[1],out=snakemake.output[1],lftS=snakemake.config["CreateIndelCountFile"]["leftStart"],lftE=snakemake.config["CreateIndelCountFile"]["leftEnd"],rgtS=snakemake.config["CreateIndelCountFile"]["rightStart"],rgtE=snakemake.config["CreateIndelCountFile"]["rightEnd"])
