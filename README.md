@@ -35,6 +35,8 @@ snakemake -s SurroNPROT.smk --cores 10 --use-singularity --singularity-args "--c
 You should prepare your input fasta files and put them in the directory: `WorkFlow/rawData/`
 and modify the `WorkFlow/config/samples.tsv` according to the example file as well as the `WorkFlow/config/config.yaml` file.
 
+You can also have a peek at the example report created by this workflow based on example data in this link: [preview](https://panxiaoguang.github.io/SurroNPROT/)
+
 We also provide an example input file in `rawData/` dir and the corresponding configuration file in `config/` dir. If your would like to try the example input, please delete all directories except `rawData/`, `config/ /references /scripts/`. Of course, the two files `SurroNPROT.smk` and `util.py` should be kept as well.
 
 ## Dependencies (Singularity container)
