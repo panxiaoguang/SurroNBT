@@ -3,10 +3,10 @@
 samples: config/samples.tsv
 
 ## threads
-threads: 10
+threads: 1
 
 ## your surro-seq library reference
-ref: references/ref_small.fa
+ref: references/ref.fa
 
 MergeByOverlap:
   ## flash params that control minimum length of overlap bewteen paired reads.
@@ -38,5 +38,16 @@ CreateIndelCountFile:
   leftEnd: 25
   rightStart: 32
   rightEnd: 37
+
+Visualization:
+ ## to define your sgRNA start and end in the integrated TRAP/SURRO seq
+  sgRNA_start: 11
+  sgRNA_end: 30
+
+FinalReport:
+ ## how many sgRNAs in your library
+  libraryCount: 4
+  
+
 
 

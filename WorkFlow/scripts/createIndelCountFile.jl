@@ -49,6 +49,10 @@ function readRef(fs::String)
 end
 
 function main(;reference::String="none",inPath::String="none",out::String="none",lftS::Int64=1,lftE::Int64=25,rgtS::Int64=32,rgtE::Int64=37)
+    outpath = dirname(out)
+    if !isdir(outpath)
+        mkdir(outpath)
+    end
     f = open(out, "w")
     refs = readRef(reference)
     all_lib = collect(keys(refs))

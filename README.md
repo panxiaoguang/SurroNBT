@@ -30,33 +30,12 @@ It is a snakemake workflow, and you can run it by the following command:
 
 ```bash
 cd WorkFlow/
-snakemake -s SurroNPROT.smk --cores 10 
+snakemake -s SurroNPROT.smk --cores 10 --use-singularity --singularity-args "--cleanenv --no-home"
 ```
-
 You should prepare your input fasta files and put them in the directory: `WorkFlow/rawData/`
 and modify the `WorkFlow/config/samples.tsv` according to the example file as well as the `WorkFlow/config/config.yaml` file.
 
-## Dependencies
+We also provide an example input file in `rawData/` dir and the corresponding configuration file in `config/` dir. If your would like to try the example input, please delete all directories except `rawData/`, `config/ /references /scripts/`. Of course, the two files `SurroNPROT.smk` and `util.py` should be kept as well.
 
-- [Julia](https://julialang.org/) (>= 1.8.1)
-- [Python](https://www.python.org/) (>= 3.6.0)
-- [cas-offinder](https://github.com/snugel/cas-offinder/releases) (>= 2.4.1)
-- [bwa](https://github.com/lh3/bwa) (>= 0.7.17)
-- [samtools](https://github.com/samtools/samtools) (>= 1.13)
-- [fastQC](https://github.com/s-andrews/FastQC)
-- [fastp](https://github.com/OpenGene/fastp)
-- [flash](https://ccb.jhu.edu/software/FLASH)
-- [snakemake](https://snakemake.readthedocs.io/en/stable/)
-
-### Julia packages
-- BioSequences
-- BioAlignments
-- StatsBase
-- FASTX
-- Fire
-- CSV
-- DataFrames
-
-### Python packages
-- pysam
-- numpy
+## Dependencies (Singularity container)
+Please download all softwares for this pipeline in this link:

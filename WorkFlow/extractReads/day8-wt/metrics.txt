@@ -1,0 +1,3 @@
+hit_numbers	4
+hit_ratio	100.0%
+average_depth	100.0%

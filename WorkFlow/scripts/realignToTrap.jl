@@ -15,7 +15,7 @@ function guina(seqLst::Vector{LongSequence{DNAAlphabet{4}}})::Dict{LongSequence{
     countmap(seqLst)
 end
 
-function global_align(query::LongSequence{DNAAlphabet{4}}, ref::LongSequence{DNAAlphabet{4}};gap_open=-5,gap_extend=-1)::PairwiseAlignment
+function global_align(query::LongSequence{DNAAlphabet{4}}, ref::LongSequence{DNAAlphabet{4}};gap_open=-10,gap_extend=-1)::PairwiseAlignment
     scoremodel = AffineGapScoreModel(EDNAFULL, gap_open=gap_open, gap_extend=gap_extend)
     res = pairalign(GlobalAlignment(), query, ref, scoremodel)
     aln = alignment(res)
