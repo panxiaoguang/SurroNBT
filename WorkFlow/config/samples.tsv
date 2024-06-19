@@ -1,3 +1,0 @@
-SampleName	ControlName	FastQ1	FastQ2
-day8-dox	day8-wt	rawData/spcas9_day8-dox_1.fq.gz	rawData/spcas9_day8-dox_2.fq.gz
-day8-wt	NA	rawData/spcas9_day8-wt_1.fq.gz	rawData/spcas9_day8-wt_2.fq.gz
